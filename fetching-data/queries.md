@@ -255,3 +255,52 @@ useQuery에 대한 대부분의 호출은 이러한 옵션의 대부분을 생�
 
 > 링크 :[https://www.apollographql.com/docs/react/data/queries/\#polling](https://www.apollographql.com/docs/react/data/queries/#polling)
 
+| OPTION | TYPE | DESCRIPTION |
+| :--- | :--- | :--- |
+| `query` | DocumentNode | graphQL 쿼리 문서는 graphql-tag에 의해 AST로 구문 분석됩니다. 조회는 첫 번째 매개 변수로 후크에 전달 될 수 있으므로 useQuery 후크의 경우 선택 사항입니다. 쿼리 구성 요소에 필요합니다. |
+| `variables` | { \[key: string\]: any } | 쿼리 실행에 필요한 모든 변수를 포함하는 객체 |
+| `pollInterval` | number | 구성 요소가 데이터를 폴링 할 간격을 ms 단위로 지정합니다. 기본값은 0입니다 \(폴링 없음\). |
+| `notifyOnNetworkStatusChange` | boolean | 네트워크 상태 또는 네트워크 오류에 대한 업데이트가 구성 요소를 다시 렌더링해야하는지 여부 기본값은 false입니다. |
+| `fetchPolicy` | FetchPolicy | 구성 요소가 Apollo 캐시와 상호 작용하는 방법 기본값은 "cache-first"입니다. . |
+| `errorPolicy` | ErrorPolicy | 구성 요소가 네트워크 및 GraphQL 오류를 처리하는 방법 기본값은 "없음"으로, GraphQL 오류를 런타임 오류로 처리합니다. |
+| `ssr` | boolean | 서버 측 렌더링 중에 쿼리를 건너 뛰려면 false로 전달하십시오. |
+| `displayName` | string | React DevTools에 표시 할 컴포넌트 이름입니다. 기본값은 'Query'입니다. |
+| `skip` | boolean | 건너 뛰기가 true이면 쿼리가 완전히 건너 뜁니다. useLazyQuery와 함께 사용할 수 없습니다. |
+| `onCompleted` | \(data: TData \| {}\) =&gt; void | 쿼리가 성공적으로 완료되면 콜백이 실행됩니다. |
+| `onError` | \(error: ApolloError\) =&gt; void | 오류 발생시 실행 된 콜백 |
+| `context` | Record&lt;string, any&gt; | 구성 요소와 네트워크 인터페이스 \(Apollo Link\) 간의 공유 컨텍스트 소품에서 헤더를 설정하거나 Apollo Boost의 요청 기능으로 정보를 보내는 데 유용합니다.. |
+| `partialRefetch` | boolean | 참인 경우 쿼리 결과가 부분적인 것으로 표시되고 캐시 누락으로 인해 반환 된 데이터가 Apollo Client QueryManager에 의해 빈 오브젝트로 재설정되는 경우 쿼리 리 페치를 수행합니다. 이전 버전과의 호환성을 위해 기본값은 false이지만 대부분의 사용 사례에서는 true로 변경해야합니다. |
+| `client` | ApolloClient | ApolloClient 인스턴스 기본적으로 useQuery / Query는 컨텍스트를 통해 전달 된 클라이언트를 사용하지만 다른 클라이언트를 전달할 수 있습니다. |
+| `returnPartialData` | boolean | 캐시에서 완전히 만족하지 않는 쿼리에 대해 캐시에서 부분 결과를 수신하도록 선택하십시오. 기본적으로 false입니다. |
+
+#### Result <a id="result"></a>
+
+호출 된 후 useQuery 후크는 다음 특성을 가진 결과 오브젝트를 리턴합니다. 이 개체에는 쿼리 결과와 함께 다시 가져 오기, 동적 폴링 및 페이지 매김에 유용한 기능이 포함되어 있습니다.
+
+| PROPERTY | TYPE | DESCRIPTION |
+| :--- | :--- | :--- |
+| `data` | TData | GraphQL 쿼리 결과가 포함 된 객체입니다. 기본값은 undefined입니다. |
+| `loading` | boolean | 요청이 진행 중인지 여부를 나타내는 부울 |
+| `error` | ApolloError | graphQLErrors 및 networkError 속성이있는 런타임 오류 |
+| `variables` | { \[key: string\]: any } | 쿼리가 호출 된 변수를 포함하는 객체 |
+| `networkStatus` | NetworkStatus | 네트워크 요청의 자세한 상태에 해당하는 1-8의 숫자입니다. 리 페치 및 폴링 상태에 대한 정보를 포함합니다. notifyOnNetworkStatusChange prop과 함께 사용됩니다. |
+| `refetch` | \(variables?: TVariables\) =&gt; Promise&lt;ApolloQueryResult&gt; | 쿼리를 다시 가져오고 선택적으로 새 변수를 전달할 수있는 기능 |
+| `fetchMore` | \({ query?: DocumentNode, variables?: TVariables, updateQuery: Function}\) =&gt; Promise&lt;ApolloQueryResult&gt; | 쿼리에 페이지 매김을 가능하게하는 기능 |
+| `startPolling` | \(interval: number\) =&gt; void | 이 함수는 간격을 ms 단위로 설정하고 지정된 간격이 경과 할 때마다 쿼리를 가져옵니다. |
+| `stopPolling` | \(\) =&gt; void | 이 함수는 쿼리 폴링을 중지합니다. |
+| `subscribeToMore` | \(options: { document: DocumentNode, variables?: TVariables, updateQuery?: Function, onError?: Function}\) =&gt; \(\) =&gt; void | 구독을 설정하는 기능입니다. subscribeToMore는 구독을 취소하는 데 사용할 수있는 함수를 반환합니다. |
+| `updateQuery` | \(previousResult: TData, options: { variables: TVariables }\) =&gt; TData | 페치, 돌연변이 또는 구독 컨텍스트 외부의 캐시에서 쿼리 결과를 업데이트 할 수있는 기능 |
+| `client` | ApolloClient | ApolloClient 인스턴스 쿼리를 수동으로 발생 시키거나 캐시에 데이터를 쓰는 데 유용합니다. |
+| `called` | boolean | useLazyQuery가 사용하는 쿼리 함수가 호출되었는지 여부를 나타내는 부울입니다 \(useQuery / Query에 설정되지 않음\). |
+
+### 다음장에서는
+
+useQuery 후크를 사용하여 데이터를 가져 오는 방법을 이해 했으므로 useMutation 후크를 사용하여 데이터를 업데이트하는 방법을 학습하십시오!
+
+그 후, 다른 유용한 Apollo Client 기능에 대해 알아보십시오.
+
+* 로컬 상태 관리 : 로컬 데이터를 쿼리하는 방법을 배웁니다.
+* Pagination : Apollo Client의 fetchMore 기능 덕분에 목록 작성이 쉬워졌습니다. 페이지 매김 자습서에서 자세히 알아보십시오.
+
+
+
