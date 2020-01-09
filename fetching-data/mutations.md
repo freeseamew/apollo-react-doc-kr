@@ -265,17 +265,17 @@ useMutation 후크는 다음 옵션을 허용합니다.
 
 | OPTION | TYPE | DESCRIPTION |
 | :--- | :--- | :--- |
-| `mutation` | DocumentNode | A GraphQL mutation document parsed into an AST by `graphql-tag`. **Optional** for the `useMutation` Hook since the mutation can be passed in as the first parameter to the Hook. **Required** for the `Mutation` component. |
-| `variables` | { \[key: string\]: any } | An object containing all of the variables your mutation needs to execute |
-| `update` | \(cache: DataProxy, mutationResult: FetchResult\) | A function used to update the cache after a mutation occurs |
-| `ignoreResults` | boolean | If true, the returned `data` property will not update with the mutation result. |
-| `optimisticResponse` | Object | Provide a [mutation response](https://www.apollographql.com/docs/react/performance/optimistic-ui/) before the result comes back from the server |
-| `refetchQueries` | Array&lt;string\|{ query: DocumentNode, variables?: TVariables}&gt; \| \(\(mutationResult: FetchResult\) =&gt; Array&lt;string\|{ query: DocumentNode, variables?: TVariables}&gt;\) | An array or function that allows you to specify which queries you want to refetch after a mutation has occurred. Array values can either be queries \(with optional variables\) or just the string names of queries to be refeteched. |
-| `awaitRefetchQueries` | boolean | Queries refetched as part of `refetchQueries` are handled asynchronously, and are not waited on before the mutation is completed \(resolved\). Setting this to `true` will make sure refetched queries are completed before the mutation is considered done. `false` by default. |
-| `onCompleted` | \(data: TData\) =&gt; void | A callback executed once your mutation successfully completes |
-| `onError` | \(error: ApolloError\) =&gt; void | A callback executed in the event of an error. |
-| `context` | Record&lt;string, any&gt; | Shared context between your component and your network interface \(Apollo Link\). Useful for setting headers from props or sending information to the `request` function of Apollo Boost. |
-| `client` | ApolloClient | An `ApolloClient` instance. By default `useMutation` / `Mutation` uses the client passed down via context, but a different client can be passed in. |
+| `mutation` | DocumentNode | GraphQL 돌연변이 문서는 graphql-tag에 의해 AST로 구문 분석됩니다. 돌연변이는 후크에 대한 첫 번째 매개 변수로 전달 될 수 있으므로 useMutation Hook의 경우 선택 사항입니다. 돌연변이 구성 요소에 필요합니다. |
+| `variables` | { \[key: string\]: any } | 변이가 실행하는 데 필요한 모든 변수를 포함하는 객체 |
+| `update` | \(cache: DataProxy, mutationResult: FetchResult\) | 변이가 발생한 후 캐시를 업데이트하는 데 사용되는 함수 |
+| `ignoreResults` | boolean | true이면 반환 된 데이터 속성이 돌연변이 결과로 업데이트되지 않습니다. |
+| `optimisticResponse` | Object | 서버에서 결과가 나오기 전에 돌연변이 응답 제공 |
+| `refetchQueries` | Array&lt;string\|{ query: DocumentNode, variables?: TVariables}&gt; \| \(\(mutationResult: FetchResult\) =&gt; Array&lt;string\|{ query: DocumentNode, variables?: TVariables}&gt;\) | 돌연변이가 발생한 후 다시 가져올 쿼리를 지정할 수있는 배열 또는 함수입니다. 배열 값은 쿼리 \(선택적 변수 포함\)이거나 refeteched 할 쿼리의 문자열 이름 일 수 있습니다. |
+| `awaitRefetchQueries` | boolean | refetchQueries의 일부로 리 페치 된 쿼리는 비동기 적으로 처리되며, 변이가 완료 \(해결\)되기 전에 대기하지 않습니다. 이를 true로 설정하면 돌연변이가 완료된 것으로 간주되기 전에 리 페치 된 쿼리가 완료됩니다. 기본적으로 false입니다. |
+| `onCompleted` | \(data: TData\) =&gt; void | 변이가 성공적으로 완료되면 콜백이 실행됩니다. |
+| `onError` | \(error: ApolloError\) =&gt; void | 오류 발생시 실행 된 콜백 |
+| `context` | Record&lt;string, any&gt; | 구성 요소와 네트워크 인터페이스 \(Apollo Link\) 간의 공유 컨텍스트 |
+| `client` | ApolloClient | ApolloClient 인스턴스 기본적으로 useMutation / Mutation은 컨텍스트를 통해 전달 된 클라이언트를 사용하지만 다른 클라이언트를 전달할 수 있습니다. |
 
 #### Result <a id="result"></a>
 
@@ -287,18 +287,18 @@ mutate 함수를 호출하여 UI에서 변이를 트리거합니다.
 
 | PROPERTY | TYPE | DESCRIPTION |
 | :--- | :--- | :--- |
-| `mutate` | \(options?: MutationOptions\) =&gt; Promise&lt;FetchResult&gt; | A function to trigger a mutation from your UI. You can optionally pass `variables`, `optimisticResponse`, `refetchQueries`, and `update` in as options, which will override options/props passed to `useMutation` / `Mutation`. The function returns a promise that fulfills with your mutation result. |
+| `mutate` | \(options?: MutationOptions\) =&gt; Promise&lt;FetchResult&gt; | UI에서 변이를 유발하는 기능입니다. 선택적으로 변수, optimisticResponse, refetchQueries를 전달하고 옵션으로 업데이트하여 useMutation / Mutation에 전달 된 옵션 / 소품을 대체합니다. 이 함수는 변이 결과를 충족시키는 약속을 반환합니다. |
 
 **Mutation result:**  
 
 
 | PROPERTY | TYPE | DESCRIPTION |
 | :--- | :--- | :--- |
-| `data` | TData | The data returned from your mutation. It can be undefined if `ignoreResults` is true. |
-| `loading` | boolean | A boolean indicating whether your mutation is in flight |
-| `error` | ApolloError | Any errors returned from the mutation |
-| `called` | boolean | A boolean indicating if the mutate function has been called |
-| `client` | ApolloClient | Your `ApolloClient` instance. Useful for invoking cache methods outside the context of the update function, such as `client.writeData` and `client.readQuery`. |
+| `data` | TData | 변이로부터 데이터가 반환되었습니다. ignoreResults가 true이면 정의되지 않을 수 있습니다. |
+| `loading` | boolean | 변이가 비행 중인지 여부를 나타내는 부울 |
+| `error` | ApolloError | 변이에서 반환 된 모든 오류 |
+| `called` | boolean | mutate 함수가 호출되었는지 여부를 나타내는 부울 |
+| `client` | ApolloClient | ApolloClient 인스턴스 client.writeData 및 client.readQuery와 같이 업데이트 함수 컨텍스트 외부에서 캐시 메소드를 호출하는 데 유용합니다. |
 
 ### 다음단계
 
