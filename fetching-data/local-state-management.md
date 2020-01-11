@@ -845,3 +845,294 @@ const client = new ApolloClient({
 });
 ```
 
+할 일을 목록에 추가하려면 현재 캐시에있는 할 일이 필요합니다. 그래서 우리는 cache.readQuery를 호출하여이를 검색합니다. 데이터가 캐시에 없으면 cache.readQuery에서 오류가 발생하므로 초기 상태를 제공해야합니다. 이것이 바로 InMemoryCache를 생성 한 후 빈 todo 배열로 cache.writeData를 호출하는 이유입니다.
+
+데이터를 캐시에 쓰려면 cache.writeQuery 또는 cache.writeData를 사용할 수 있습니다. 이 둘의 유일한 차이점은 cache.writeQuery에서 캐시에 쓰는 데이터의 모양이 쿼리에 필요한 데이터의 모양과 동일한 지 확인하기 위해 쿼리를 전달해야한다는 것입니다. 후드 아래에서 cache.writeData는 전달한 데이터 객체에서 자동으로 쿼리를 생성하고 cache.writeQuery를 호출합니다.
+
+#### writeFragment and readFragment <a id="writefragment-and-readfragment"></a>
+
+cache.readFragment는 조각을 전달한다는 점을 제외하고 cache.readQuery와 유사합니다. 캐시 키가 있으면 캐시의 모든 항목을 읽을 수 있으므로 유연성이 향상됩니다. 반대로 cache.readQuery는 캐시의 루트에서만 읽을 수 있습니다.
+
+이전의 할 일 목록 예제로 돌아가서 cache.readFragment가 할 일 중 하나를 완료 할 때 어떻게 전환 할 수 있는지 살펴 보겠습니다.
+
+```text
+import { ApolloClient, InMemoryCache } from '@apollo/client';
+
+const client = new ApolloClient({
+  resolvers: {
+    Mutation: {
+      toggleTodo: (_, variables, { cache }) => {
+        const id = `TodoItem:${variables.id}`;
+        const fragment = gql`
+          fragment completeTodo on TodoItem {
+            completed
+          }
+        `;
+        const todo = cache.readFragment({ fragment, id });
+        const data = { ...todo, completed: !todo.completed };
+
+        // you can also do cache.writeData({ data, id }) here if you prefer
+        cache.writeFragment({ fragment, id, data });
+        return null;
+      },
+    },
+  },
+});
+```
+
+할 일을 토글하려면 캐시에서 할 일과 그 상태가 필요합니다. 그래서 우리는 cache.readFragment를 호출하고 조각을 가져 와서 검색합니다. 우리가 cache.readFragment에 전달하는 ID는 캐시 키를 나타냅니다. InMemoryCache를 사용하고 dataIdFromObject 구성 속성을 재정의하지 않는 경우 캐시 키는 \_\_typename : id 여야합니다.
+
+데이터를 캐시에 쓰려면 cache.writeFragment 또는 cache.writeData를 사용할 수 있습니다. 이 둘의 유일한 차이점은 cache.writeFragment에서 캐시 노드에 쓰는 데이터의 모양이 조각에 필요한 데이터의 모양과 동일한 지 확인하기 위해 조각을 전달해야한다는 것입니다. 후드 아래에서 cache.writeData는 자동으로 전달하는 데이터 객체 및 ID에서 조각을 생성하고 cache.writeFragment를 호출합니다.
+
+### Client-side schema <a id="client-side-schema"></a>
+
+ApolloClient 생성자 typeDefs 매개 변수 또는 로컬 상태 API setTypeDefs 메서드를 통해 Apollo Client와 함께 사용할 클라이언트 쪽 스키마를 선택적으로 설정할 수 있습니다. 스키마는 스키마 정의 언어로 작성해야합니다. 스키마 유효성 검사를위한 graphql-js 모듈은 번들 크기를 크게 증가시키기 때문에이 스키마는 서버에서와 같이 유효성 검사에 사용되지 않습니다. 대신 클라이언트 측 스키마는 Apollo Client Devtools의 내부 검사에 사용되며 GraphiQL에서 스키마를 탐색 할 수 있습니다.
+
+다음은 ApolloClient 생성자를 통해 클라이언트 측 스키마를 구성하는 방법을 보여줍니다.
+
+```text
+import { ApolloClient, InMemoryCache, HttpLink, gql } from '@apollo/client';
+
+const typeDefs = gql`
+  extend type Query {
+    isLoggedIn: Boolean!
+    cartItems: [Launch]!
+  }
+
+  extend type Launch {
+    isInCart: Boolean!
+  }
+
+  extend type Mutation {
+    addOrRemoveFromCart(id: ID!): [Launch]
+  }
+`;
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: new HttpLink({ uri: 'http://localhost:4000/graphql' }),
+  typeDefs,
+});
+```
+
+Apollo Client Devtools를 열고 GraphiQL 탭을 클릭하면 "문서"섹션에서 클라이언트 스키마를 탐색 할 수 있습니다. 이 예제에는 원격 스키마가 포함되어 있지 않지만 원격 스키마가 포함되어 있으면 원격 쿼리와 함께 로컬 쿼리 및 변이를 볼 수 있습니다.
+
+![](../.gitbook/assets/client-schema.png)
+
+### Advanced <a id="advanced"></a>
+
+#### Code splitting\(코드 분할\) <a id="code-splitting"></a>
+
+로컬 리졸버의 복잡성과 크기에 따라 초기 ApolloClient 인스턴스를 생성 할 때 항상이를 미리 정의하지 않을 수도 있습니다. 응용 프로그램의 특정 부분에만 필요한 로컬 리졸버가있는 경우 언제든지 Apollo Client의 addResolvers 및 setResolvers 함수를 사용하여 리졸버 맵을 조정할 수 있습니다. 리 액트 로딩 가능과 같은 것을 사용하여 경로 기반 코드 분할과 같은 기술을 활용할 때 실제로 유용 할 수 있습니다.
+
+메시징 앱을 구축 중이고 로컬에 저장된 총 메시지 수를 반환하는 데 사용되는 / stats 경로가 있다고 가정 해 보겠습니다. react-loadable을 사용하여 Stats 컴포넌트를 다음과 같이로드합니다 :
+
+```text
+import React from "react";
+import { ApolloConsumer, useApolloClient, useQuery, gql } from "@apollo/client";
+
+const GET_MESSAGE_COUNT = gql`
+  {
+    messageCount @client {
+      total
+    }
+  }
+`;
+
+const resolvers = {
+  Query: {
+    messageCount: (_, args, { cache }) => {
+      // ... calculate and return the number of messages in
+      // the cache ...
+      return {
+        total: 123,
+        __typename: "MessageCount",
+      };
+    },
+  },
+};
+
+export function MessageCount() {
+  const client = useApolloClient();
+  client.addResolvers(resolvers);
+
+  const { loading, data: { messageCount } } = useQuery(GET_MESSAGE_COUNT);
+
+  if (loading) return "Loading ...";
+
+  return (
+    <p>
+      Total number of messages: {messageCount.total}
+    </p>
+  );
+};
+```
+
+로컬 리졸버 코드는 사용자가 / stats에 액세스 할 때 다운로드하는 번들에만 포함됩니다. 초기 응용 프로그램 번들에 포함되지 않으므로 초기 번들 크기를 줄이고 궁극적으로 다운로드 및 응용 프로그램 시작 시간을 도와줍니다.
+
+### Migrating from `apollo-link-state` <a id="migrating-from-apollo-link-state"></a>
+
+아폴로 링크 상태 프로젝트는 로컬 상태 처리를 아폴로 생태계에 도입 한 최초의 프로젝트였습니다. ApolloLink를 추가하여 로컬 리졸버를 처리하는 것은 훌륭한 출발점이며 @client 기반 쿼리가 의미가 있고 로컬 상태 관리에 실제로 효과적이라는 것을 증명했습니다.
+
+아폴로 링크 상태는 로컬 상태 처리의 목표 중 일부를 달성했지만, ApolloLink를 사용할 때 사용 가능한 정보는 링크 시스템의 모듈성에 의해 제한됩니다. 로컬 상태 관리는 Apollo 에코 시스템의 핵심 부분으로 간주되며 Apollo Client가 진행됨에 따라 로컬 리졸버가 가능한 한 코어에 밀접하게 통합되도록합니다. 이 통합은 @export 처리와 같은 새로운 가능성을 열어주고 데이터 보존, 무효화, 가비지 수집 및 로컬 및 원격 데이터 모두에 영향을주는 기타 계획된 기능을 캐시하기 위해 향후 계획된 조정과 밀접하게 연계됩니다.
+
+apollo-link-state 대신 Apollo Client의 로컬 상태 관리 기능을 사용하도록 응용 프로그램을 업데이트하는 것은 매우 간단합니다. 필요한 단계는 다음과 같습니다.
+
+1. apollo-link-state를 종속성으로 포함하고 ClientState와 함께 사용하기 위해 가져 오는 것은 더 이상 필요하지 않습니다. 로컬 상태 관리가 apollo-client&gt; = 2.5.0 및 @ apollo / client&gt; = 3.0.0에 포함되어 있으므로 apollo-link-state 종속성을 제거 할 수 있습니다.
+
+2. withClientState 사용은 더 이상 지원되지 않습니다. 다음과 같은:
+
+```text
+const cache = new InMemoryCache();
+const stateLink = withClientState({ cache, resolvers: { ... } });
+const link = ApolloLink.from([stateLink, new HttpLink({ uri: '...' })]);
+const client = new ApolloClient({
+  cache,
+  link,
+});
+```
+
+becomes
+
+```text
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: new HttpLink({ uri: '...' }),
+  resolvers: { ... },
+});
+```
+
+3. 기본값은 더 이상 지원되지 않습니다. 캐시를 준비하려면 cache.writeData를 직접 사용하십시오. 그래서
+
+```text
+const cache = new InMemoryCache();
+const stateLink = withClientState({
+  cache,
+  resolvers: { ... },
+  defaults: {
+    someField: 'some value',
+  },
+});
+const link = ApolloLink.from([stateLink, new HttpLink({ uri: '...' })]);
+const client = new ApolloClient({
+  cache,
+  link,
+});
+```
+
+becomes
+
+```text
+const cache = new InMemoryCache();
+const client = new ApolloClient({
+  cache,
+  link: new HttpLink({ uri: '...' }),
+  resolvers: { ... },
+});
+cache.writeData({
+  data: {
+    someField: 'some value',
+  },
+});
+```
+
+4. 테스트 하기 
+
+### Next steps <a id="next-steps"></a>
+
+Apollo 캐시는 애플리케이션의 모든 데이터에 대한 단일 소스가되기 때문에 Apollo Client를 사용하여 로컬 데이터를 관리하면 상태 관리 코드를 단순화 할 수 있습니다. Apollo Client의 로컬 상태 기능에 대한 자세한 내용을 보려면 다음을 확인하십시오.
+
+* Apollo Tutorial은 단계별로 Apollo Client의 로컬 상태 기능을 사용하는 방법을 보여줄뿐만 아니라 다른 Apollo 구성 요소를 사용하여 풀 스택 응용 프로그램을 구축하는 방법을 안내합니다. Apollo 커뮤니티 스펙트럼 그룹은 Apollo Client의 지역 주에 대한 질문을하기에 좋은 장소입니다.
+* Apollo Client의 로컬 상태 관리를 개선하기 위해 향후 변경을 제안하거나 작업에 관심이 있습니까? 우리는 도움을 사랑합니다! 새로운 기능 요청을 열어 기능 토론을 시작하십시오.
+* 버그를 찾았습니까? 불가능한! 🙈 아폴로 클라이언트 리포지토리에서 실행 가능한 작은 복제본을 사용하여 새로운 이슈를 열면 커뮤니티 또는 Apollo 팀의 누군가가 문제를 해결하는 데 도움이됩니다.
+
+### API <a id="api"></a>
+
+Apollo Client 로컬 상태 처리가 시작되었으므로 별도의 설치가 필요하지 않습니다. 로컬 상태 관리는 ApolloClient 인스턴스화 중 \(ApolloClient 생성자를 통해\) 또는 ApolloClient 로컬 상태 API를 사용하여 구성 할 수 있습니다. 캐시의 데이터는 ApolloCache API를 통해 관리 할 수 있습니다.
+
+#### ApolloClient <a id="apolloclient"></a>
+
+**Constructor**
+
+```text
+import { ApolloClient, InMemoryCache } from '@apollo/client';
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  resolvers: { ... },
+  typeDefs: { ... },
+});
+```
+
+| OPTION | TYPE | DESCRIPTION |
+| :--- | :--- | :--- |
+| `resolvers?` | Resolvers \| Resolvers\[\] | 캐시를 읽고 쓰기 위해 GraphQL 쿼리 및 변이가 호출하는 리졸버 함수 맵. |
+| `typeDefs?` | string \| string\[\] \| DocumentNode \| DocumentNode\[\];&lt;string&gt; | 스키마 정의 언어로 작성된 클라이언트 측 스키마를 나타내는 문자열입니다. 이 스키마는 유효성 검사에는 사용되지 않지만 Apollo Client Devtools의 내부 검사에는 사용됩니다. |
+
+이러한 옵션은 필요하지 않습니다. 아무 것도 지정하지 않으면 @client 지시문을 사용하여 Apollo Client 캐시를 쿼리 할 수 있습니다.
+
+**Methods**
+
+```text
+import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: new HttpLink({ uri: 'http://localhost:4000/graphql' }),
+});
+
+client.setResolvers({ ... });
+```
+
+| METHOD | DESCRIPTION |
+| :--- | :--- |
+| addResolvers\(resolvers: Resolvers \| Resolvers\[\]\) | 캐시를 읽고 쓰기 위해 GraphQL 쿼리 및 돌연변이가 호출하는 리졸버 함수 맵. addResolvers를 통해 추가 된 리졸버 함수는 내부 리졸버 함수 맵에 추가됩니다. 즉, 덮어 쓰지 않은 기존 리졸버가 유지됩니다. |
+| setResolvers\(resolvers: Resolvers \| Resolvers\[\]\) | 캐시를 읽고 쓰기 위해 GraphQL 쿼리 및 돌연변이가 호출하는 리졸버 함수 맵. setResolvers를 통해 추가 된 리졸버 함수는 기존의 모든 리졸버를 덮어 씁니다 \(새 리졸버가 추가되기 전에 기존 리졸버 맵이 지워짐\). |
+| `getResolvers` | 현재 정의 된 리졸버 맵을 가져옵니다. |
+| `setLocalStateFragmentMatcher(fragmentMatcher: FragmentMatcher)` | 공용체 또는 인터페이스에서 프래그먼트가 포함 된 로컬 상태 쿼리를 해결할 때 사용할 사용자 정의 FragmentMatcher를 설정하십시오. |
+
+**Typescript interfaces/types:**
+
+```text
+interface Resolvers {
+  [key: string]: {
+    [field: string]: (
+      rootValue?: any,
+      args?: any,
+      context?: any,
+      info?: any,
+    ) => any;
+  };
+}
+
+type FragmentMatcher = (
+  rootValue: any,
+  typeCondition: string,
+  context: any,
+) => boolean;
+```
+
+#### ApolloCache <a id="apollocache"></a>
+
+**Methods**
+
+```text
+import { InMemoryCache } from '@apollo/client';
+
+const cache = new InMemoryCache();
+cache.writeData({
+  data: {
+    isLoggedIn: !!localStorage.getItem('token'),
+    cartItems: [],
+  },
+});
+```
+
+| METHOD | DESCRIPTION |
+| :--- | :--- |
+| `writeData({ id, data })` | 쿼리를 전달하지 않고 캐시의 루트에 직접 데이터를 씁니다. 초기 데이터로 캐시를 준비하는 데 좋습니다. 캐시의 기존 항목에 데이터를 쓰려면 항목의 캐시 키를 id로 전달하십시오. |
+| `writeQuery({ query, variables, data })` | writeData \(캐시의 루트에 데이터를 기록\)와 유사하지만 지정된 쿼리를 사용하여 캐시에 쓰는 데이터의 모양이 쿼리에 필요한 데이터의 모양과 동일한 지 확인합니다. |
+| `readQuery({ query, variables })` | 지정된 쿼리에 대한 캐시에서 데이터를 읽습니다. |
+| `writeFragment({ id, fragment, fragmentName, variables, data })` | writeData와 유사하지만 \(캐시의 기존 항목에 데이터를 기록\) 지정된 조각을 사용하여 캐시에 쓰는 데이터의 모양이 조각에 필요한 데이터의 모양과 같은지 확인합니다. |
+| `readFragment({ id, fragment, fragmentName, variables })` | 지정된 조각에 대한 캐시에서 데이터를 읽습니다. |
+
