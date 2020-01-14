@@ -1,4 +1,4 @@
-# Configuring the cache\(캐시 설정\)
+# Configuring the cache\(캐시 설정\) : 3.0
 
 Apollo Client는 GraphQL 쿼리 결과를 표준화 된 인 메모리 캐시에 저장합니다. 이를 통해 클라이언트는 불필요한 네트워크 요청을 보내지 않고도 동일한 데이터에 대한 향후 쿼리에 응답 할 수 있습니다.
 

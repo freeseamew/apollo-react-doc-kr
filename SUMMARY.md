@@ -16,7 +16,9 @@
 
 ## CACHING
 
-* [Configuring the cache\(캐시 설정\)](caching/configuring-the-cache.md)
+* [Configuring the cache\(캐시 설정\): 2.6](caching/configuring-the-cache-2.6.md)
+* [Interacting with cached data \(상호작용\):2.6](caching/interacting-with-cached-data-2.6.md)
+* [Configuring the cache\(캐시 설정\) : 3.0](caching/configuring-the-cache.md)
 * [Interacting with cached data\(상호작용\)](caching/interacting-with-cached-data.md)
 
 ## DEVELOPMENT & TESTING
