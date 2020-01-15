@@ -188,7 +188,7 @@ function TodoList() {
 
 여기서 GraphQL 쿼리를 생성하고 @client 지시문을 todos 및 visibilityFilter에 추가합니다. 그런 다음 쿼리를 useQuery 후크로 전달합니다. 여기서 @client 지시문은 useQuery 구성 요소에 todos 및 visibilityFilter를 Apollo 클라이언트 캐시에서 가져 오거나 사전 정의 된 로컬 리졸버를 사용하여 해결해야 함을 알려줍니다. 다음 섹션에서는 두 옵션이 어떻게 작동하는지 자세히 설명합니다.
 
-> 위의 쿼리는 구성 요소가 마운트되는 즉시 실행되므로 캐시에 할 일이 없거나 할 일 계산에 도움이되는 로컬 리졸버가없는 경우 어떻게해야합니까? 오류가 발생하지 않도록 쿼리를 실행하기 전에 캐시에 초기 상태를 작성해야합니다. 자세한 내용은 아래 캐시 초기화 섹션을 참조하십시오.
+> 위의 쿼리는 구성 요소가 마운트되는 즉시 실행 되므로 캐시에 할 일이 없거나 할 일 계산에 도움이되는 로컬 리졸버가없는 경우 어떻게해야합니까? 오류가 발생하지 않도록 쿼리를 실행하기 전에 캐시에 초기 상태를 작성해야합니다. 자세한 내용은 아래 캐시 초기화 섹션을 참조하십시오.
 
 #### Initializing the cache\(캐시 초기화\) <a id="initializing-the-cache"></a>
 
@@ -215,7 +215,7 @@ cache.writeData({
 });
 ```
 
-예를 들어 사용자가 로그 아웃 할 때 애플리케이션에서 상점을 재설정해야 할 수도 있습니다. 응용 프로그램의 어느 곳에서나 client.resetStore를 호출하면 캐시를 다시 초기화해야 할 것입니다. client.onResetStore 메소드를 사용하여 cache.writeData를 다시 호출 할 콜백을 등록 할 수 있습니다.
+예를 들어 사용자가 로그 아웃 할 때 애플리케이션에서 상점을 재설정 해야 할 수도 있습니다. 응용 프로그램의 어느 곳에서나 client.resetStore를 호출하면 캐시를 다시 초기화해야 할 것입니다. client.onResetStore 메소드를 사용하여 cache.writeData를 다시 호출 할 콜백을 등록 할 수 있습니다.
 
 ```text
 import { ApolloClient, InMemoryCache } from '@apollo/client';
@@ -972,7 +972,7 @@ export function MessageCount() {
 
 ### Migrating from `apollo-link-state` <a id="migrating-from-apollo-link-state"></a>
 
-아폴로 링크 상태 프로젝트는 로컬 상태 처리를 아폴로 생태계에 도입 한 최초의 프로젝트였습니다. ApolloLink를 추가하여 로컬 리졸버를 처리하는 것은 훌륭한 출발점이며 @client 기반 쿼리가 의미가 있고 로컬 상태 관리에 실제로 효과적이라는 것을 증명했습니다.
+apollo-link-state 프로젝트는 로컬 상태 처리를 아폴로 생태계에 도입 한 최초의 프로젝트였습니다. ApolloLink를 추가하여 로컬 리졸버를 처리하는 것은 훌륭한 출발점이며 @client 기반 쿼리가 의미가 있고 로컬 상태 관리에 실제로 효과적이라는 것을 증명했습니다.
 
 아폴로 링크 상태는 로컬 상태 처리의 목표 중 일부를 달성했지만, ApolloLink를 사용할 때 사용 가능한 정보는 링크 시스템의 모듈성에 의해 제한됩니다. 로컬 상태 관리는 Apollo 에코 시스템의 핵심 부분으로 간주되며 Apollo Client가 진행됨에 따라 로컬 리졸버가 가능한 한 코어에 밀접하게 통합되도록합니다. 이 통합은 @export 처리와 같은 새로운 가능성을 열어주고 데이터 보존, 무효화, 가비지 수집 및 로컬 및 원격 데이터 모두에 영향을주는 기타 계획된 기능을 캐시하기 위해 향후 계획된 조정과 밀접하게 연계됩니다.
 

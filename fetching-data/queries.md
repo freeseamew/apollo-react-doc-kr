@@ -12,13 +12,13 @@ description: useQuery 후크를 사용하여 데이터를 가져 오는 방법 �
 
 이 문에서는 기본 GraphQL 쿼리 작성에 익숙하다고 가정합니다. 새로 고침이 필요한 경우이 가이드를 읽고 GraphiQL에서 쿼리 실행을 연습하는 것이 좋습니다. Apollo Client 쿼리는 표준 GraphQL이므로 GraphiQL에서 실행되는 모든 쿼리는 query를 사용하도록 제공된 경우에도 실행됩니다.
 
-또한이 기사에서는 이미 Apollo Client를 설정했으며 ApolloProvider 구성 요소에 React 앱을 래핑했다고 가정합니다. 이러한 단계 중 하나에 대한 도움이 필요한 경우 시작 안내서를 읽으십시오
+또한이 문서에서는 이미 Apollo Client를 설정했으며 ApolloProvider 구성 요소에 React 앱을 랩핑했다고 가정합니다. 이러한 단계 중 하나에 대한 도움이 필요한 경우 시작 안내서를 읽으십시오
 
 > 아래 예제와 함께 시작하려면 CodeSandbox에서 시작 프로젝트와 샘플 GraphQL 서버를 엽니 다. 여기에서 완성 된 버전의 앱을 볼 수 있습니다.
 
 ### 쿼리 실행
 
-useQuery React 후크는 Apollo 애플리케이션에서 쿼리를 실행하기위한 기본 API입니다. React 컴포넌트 내에서 쿼리를 실행하려면 useQuery를 호출하고 GraphQL 쿼리 문자열을 전달하십시오. 구성 요소가 렌더링되면 useQuery는 UI 렌더링에 사용할 수있는로드, 오류 및 데이터 속성이 포함 된 객체를 Apollo Client에서 반환합니다.
+useQuery React hook는 Apollo 애플리케이션에서 쿼리를 실행하기위한 기본 API입니다. React 컴포넌트 내에서 쿼리를 실행하려면 useQuery를 호출하고 GraphQL 쿼리 문자열을 전달하십시오. 구성 요소가 렌더링되면 useQuery는 UI 렌더링에 사용할 수있는로드, 오류 및 데이터 속성이 포함 된 객체를 Apollo Client에서 반환합니다.
 
 예를 봅시다. 먼저 GET\_DOGS라는 GraphQL 쿼리를 만듭니다. 쿼리 문자열을 쿼리 문서로 구문 분석하려면 gql 함수에서 쿼리 문자열을 래핑해야합니다.
 
