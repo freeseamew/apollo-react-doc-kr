@@ -2,7 +2,7 @@
 description: GraphQL 구독으로 실시간 데이터를 얻는 방법 알아보기
 ---
 
-# Subscriptions \(3.0\)
+# Subscriptions
 
 GraphQL 사양은 쿼리를 사용하여 데이터를 가져오고 변이를 사용하여 데이터를 수정하는 것 외에도 subscription\(구독\)이라는 세 번째 작업 유형을 지원합니다.
 
