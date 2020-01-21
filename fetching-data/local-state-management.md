@@ -2,7 +2,7 @@
 description: Apollo Client에서 로컬 데이터로 작업하는 방법 알아보기
 ---
 
-# Local state management
+# Local state management \(3.0\)
 
 Apollo Client를 사용하여 GraphQL 서버에서 원격 데이터를 관리하는 방법을 배웠지만 로컬 데이터로 무엇을해야합니까? 앱의 여러 구성 요소에서 부울 플래그 및 장치 API 결과에 액세스 할 수 있기를 원하지만 별도의 Redux 또는 MobX 스토어를 유지하고 싶지 않습니다. 이상적으로, 우리는 Apollo 캐시가 클라이언트 응용 프로그램의 모든 데이터에 대한 단일 소스가되기를 원합니다.
 

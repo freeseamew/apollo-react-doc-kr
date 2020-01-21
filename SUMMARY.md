@@ -8,8 +8,8 @@
 
 * [Queries](fetching-data/queries.md)
 * [Mutations](fetching-data/mutations.md)
-* [Local state management](fetching-data/local-state-management.md)
-* [Subscriptions](fetching-data/subscriptions.md)
+* [Local state management \(3.0\)](fetching-data/local-state-management.md)
+* [Subscriptions \(3.0\)](fetching-data/subscriptions.md)
 * [Pagination](fetching-data/pagination.md)
 * [Using fragments](fetching-data/using-fragments.md)
 * [Error handling](fetching-data/error-handling.md)
