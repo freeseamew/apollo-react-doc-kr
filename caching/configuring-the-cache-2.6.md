@@ -12,7 +12,7 @@ npm install apollo-cache-inmemory --save
 
 ### Initializing the cache\(캐시 초기화\) <a id="initializing-the-cache"></a>
 
-```text
+```javascript
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 import { ApolloClient } from 'apollo-client';
@@ -62,7 +62,7 @@ InMemoryCache는 다음을 통해 쿼리 결과를 캐시에 저장하기 전에
 
 예를 들어, 객체 유형이 모두 고유 식별자로 사용하려는 키 필드를 정의하는 경우 다음과 같이 dataIdFromObject를 정의 할 수 있습니다.
 
-```text
+```javascript
 const cache = new InMemoryCache({
   dataIdFromObject: object => object.key || null
 });
@@ -72,7 +72,7 @@ InMemoryCache는 dataIdFromObject가 반환하는 정확한 문자열을 사용�
 
 다음과 같이 객체의 \_\_typename 속성을 키 오프하여 서로 다른 논리를 사용하여 각 객체 유형에 대한 고유 식별자를 생성 할 수 있습니다.
 
-```text
+```javascript
 import { InMemoryCache, defaultDataIdFromObject } from 'apollo-cache-inmemory';
 
 const cache = new InMemoryCache({
@@ -90,7 +90,7 @@ const cache = new InMemoryCache({
 
 캐시 정규화를 사용하여 저장소를 올바르게 업데이트하는 경우를 살펴 보겠습니다. 다음 쿼리를 수행한다고 가정 해 봅시다.
 
-```text
+```graphql
 {
   post(id: '5') {
     id
@@ -101,7 +101,7 @@ const cache = new InMemoryCache({
 
 그런 다음 다음과 같은 변이를 수행합니다.
 
-```text
+```graphql
 mutation {
   upvotePost(id: '5') {
     id

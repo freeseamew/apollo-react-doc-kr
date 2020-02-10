@@ -8,7 +8,7 @@ GraphQL 조각은 클라이언트가 여러 쿼리와 돌연변이간에 공유 
 
 여기서는 Person 객체와 함께 사용할 수있는 NameParts 조각을 선언합니다.
 
-```text
+```graphql
 fragment NameParts on Person {
   firstName
   lastName
@@ -19,7 +19,7 @@ fragment NameParts on Person {
 
 이제 Person 객체를 참조하는 여러 쿼리 및 돌연변이에 NameParts 조각을 포함시킬 수 있습니다.
 
-```text
+```graphql
 query GetPerson {
   people(id: "7") {
     ...NameParts
@@ -30,7 +30,7 @@ query GetPerson {
 
 NameParts 정의를 기반으로 위의 쿼리는 다음과 같습니다. NameParts jeon
 
-```text
+```graphql
 query GetPerson {
   people(id: "7") {
     firstName
@@ -48,7 +48,7 @@ query GetPerson {
 
 이 기본 필드 세트를 지정하기 위해 모든 주석 관련 조작에 포함되어야하는 주석 필드를 나열하는 단편을 정의합니다.
 
-```text
+```javascript
 import { gql } from '@apollo/client';
 
 CommentsPage.fragments = {
@@ -70,7 +70,7 @@ CommentsPage.fragments = {
 
 GraphQL 오퍼레이션 내에 프래그먼트를 임베드하려면 다음과 같이 이름 앞에 3 개의 마침표 \(...\)를 붙입니다.
 
-```text
+```javascript
 const SUBMIT_COMMENT_MUTATION = gql`
   mutation SubmitComment($postFullName: String!, $commentContent: String!) {
     submitComment(postFullName: $postFullName, commentContent: $commentContent) {
@@ -110,7 +110,7 @@ FeedPage
 
 공존 된 프래그먼트는 프래그먼트의 필드를 사용하는 특정 구성 요소에 첨부되는 것을 제외하고는 다른 프래그먼트와 같습니다. 예를 들어 FeedPage의 VoteButtons 자식 구성 요소는 FeedEntry 객체의 score 및 vote {choice} 필드를 사용할 수 있습니다.
 
-```text
+```javascript
 VoteButtons.fragments = {
   entry: gql`
     fragment VoteButtonsFragment on FeedEntry {
@@ -125,7 +125,7 @@ VoteButtons.fragments = {
 
 자식 구성 요소에서 조각을 정의한 후 부모 구성 요소는 다음과 같이 자체 조각 정의에서 자식 구성 요소 조각을 참조 할 수 있습니다.
 
-```text
+```javascript
 FeedEntry.fragments = {
   entry: gql`
     fragment FeedEntryFragment on FeedEntry {
@@ -192,7 +192,7 @@ query { all\_characters {
 
 다음은 possibleTypes 선언의 예입니다.
 
-```text
+```javascript
 const cache = new InMemoryCache({
   possibleTypes: {
     Character: ["Jedi", "Droid"],
@@ -210,7 +210,7 @@ const cache = new InMemoryCache({
 
 다음 예제 스크립트는 GraphQL 내부 검사 쿼리를 possibleTypes 구성 객체로 변환합니다.
 
-```text
+```javascript
 const fetch = require('node-fetch');
 const fs = require('fs');
 
@@ -256,7 +256,7 @@ fetch(`${YOUR_API_HOST}/graphql`, {
 
 그런 다음 생성 된 가능한 유형 JSON 모듈을 InMemoryCache를 작성하는 파일로 가져올 수 있습니다.
 
-```text
+```javascript
 import possibleTypes from './path/to/possibleTypes.json';
 
 const cache = new InMemoryCache({

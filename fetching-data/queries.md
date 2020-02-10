@@ -22,7 +22,7 @@ useQuery React hook는 Apollo 애플리케이션에서 쿼리를 실행하기위
 
 예를 봅시다. 먼저 GET\_DOGS라는 GraphQL 쿼리를 만듭니다. 쿼리 문자열을 쿼리 문서로 구문 분석하려면 gql 함수에서 쿼리 문자열을 래핑해야합니다.
 
-```text
+```javascript
 //index.js
 
 import gql from 'graphql-tag';
@@ -40,7 +40,7 @@ const GET_DOGS = gql`
 
 다음으로 Dogs라는 구성 요소를 만듭니다. 그 안에 GET\_DOGS 쿼리를 useQuery 후크에 전달합니다.
 
-```text
+```javascript
 //index.js
 
 function Dogs({ onDogSelected }) {
@@ -76,7 +76,7 @@ Apollo Client가 서버에서 쿼리 결과를 가져올 때마다 해당 결과
 
 이 캐싱이 실제로 작동하는지 확인하려면 DogPhoto라는 새 구성 요소를 만들어 보겠습니다. DogPhoto는 Dogs 컴포넌트에서 드롭 다운 메뉴의 현재 값을 반영하는 breed라는 소품을 허용합니다.
 
-```text
+```javascript
 //index.js
 
 const GET_DOG_PHOTO = gql`
@@ -116,7 +116,7 @@ function DogPhoto({ breed }) {
 
 폴링은 지정된 간격으로 쿼리가 주기적으로 실행되도록하여 서버와 거의 실시간으로 동기화합니다. 조회 폴링을 사용 가능하게하려면 간격 \(밀리 초\)으로 pollInterval 구성 옵션을 useQuery 후크에 전달하십시오.
 
-```text
+```javascript
 function DogPhoto({ breed }) {
   const { loading, error, data } = useQuery(GET_DOG_PHOTO, {
     variables: { breed },
@@ -145,7 +145,7 @@ pollInterval을 500으로 설정하면 0.5 초마다 서버에서 현재 유형�
 
 선택적으로 리 페치 함수에 새 변수 오브젝트를 제공 할 수 있습니다. 그렇지 않은 경우 \(다음 예에서와 같이\) 쿼리는 이전 실행에서 사용한 것과 동일한 변수를 사용합니다.
 
-```text
+```javascript
 // index.js
 
 function DogPhoto({ breed }) {
@@ -176,7 +176,7 @@ function DogPhoto({ breed }) {
 
 다행히 useQuery 후크의 결과 객체는 networkStatus 속성을 통해 쿼리 상태에 대한 세분화 된 정보를 제공합니다. 이 정보를 이용하려면 리 페치가 진행되는 동안 쿼리 구성 요소가 다시 렌더링되도록 notifyOnNetworkStatusChange 옵션을 true로 설정해야합니다.
 
-```text
+```javascript
 // index.js
 
 function DogPhoto({ breed }) {
@@ -216,7 +216,7 @@ React가 useQuery 후크를 호출하는 구성 요소를 마운트하고 렌더
 
 useLazyQuery 후크는 구성 요소 렌더링 이외의 이벤트에 대한 응답으로 쿼리를 실행하는 데 적합합니다. 이 후크는 한 가지 주요 예외를 제외하고는 useQuery와 동일하게 작동합니다. useLazyQuery가 호출되면 연관된 쿼리가 즉시 실행되지 않습니다. 대신 쿼리를 실행할 준비가 될 때마다 호출 할 수있는 함수를 결과 튜플에 반환합니다.
 
-```text
+```javascript
 // index.js
 
 import React, { useState } from 'react';

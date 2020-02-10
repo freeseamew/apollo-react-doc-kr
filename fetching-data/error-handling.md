@@ -24,7 +24,7 @@ fetchPolicy와 마찬가지로 errorPolicy를 사용하면 서버의 GraphQL 오
 
 각 요청에 대해 errorPolicy를 다음과 같이 설정할 수 있습니다.
 
-```text
+```javascript
 const MY_QUERY = gql`
   query WillFail {
     badField
@@ -56,7 +56,7 @@ Apollo Link를 사용할 때 네트워크 오류를 처리하는 기능이 훨�
 
 기본사용법
 
-```text
+```javascript
 import { onError } from "apollo-link-error";
 
 const link = onError(({ graphQLErrors, networkError }) => {
@@ -84,7 +84,7 @@ const link = onError(({ graphQLErrors, networkError }) => {
 
 조건부로 오류를 무시하려면 response.errors = null; 오류 처리기 내에서 :
 
-```text
+```javascript
 onError(({ response, operation }) => {
   if (operation.operationName === "IgnoreErrorsQuery") {
     response.errors = null;

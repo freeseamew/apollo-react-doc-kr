@@ -10,7 +10,7 @@ description: 데이터를 관리하기 위해 Apollo Client를 선택해야 하�
 
 데이터 가져오기\(data fetching\)에 대한 아폴로의 선언적 접근방식으로 데이터를 검색하고, 로딩 및 오류 상태를 추적하고, UI를 업데이트하는 모든 논리가 useQuery Hook에 의해 캡슐화됩니다. 이 캡슐화를 통해 쿼리 결과를 현재의 구성요소에 통합하는 것은 쉬운 일이 될 수 있습니다. 리액트 아폴로와 실제로 어떤 모습인지 알아보도록 하겠습니.
 
-```text
+```javascript
 function Feed() {
   const { loading, error, data } = useQuery(GET_DOGS);
   if (error) return <Error />;
@@ -30,7 +30,7 @@ Apollo Client로 전환하면 데이터 관리와 관련된 많은 불필요한 
 
 Apollo Client를 다른 데이터 관리 솔루션과 차별화하는 주요 기능 중 하나는 정규화 된 캐시입니다. Apollo Client를 설정하기 만하면 추가 구성없이 지능적으로 캐시를 얻을 수 있습니다. Pupstagram 예제 앱의 홈 페이지에서 개 중 하나를 클릭하여 세부 사항 페이지를보십시오. 그런 다음 홈페이지로 돌아갑니다. Apollo 캐시 덕분에 홈페이지의 이미지가 즉시로드됩니다.
 
-```text
+```javascript
 import ApolloClient from 'apollo-boost';
 
 // the Apollo cache is set up automatically
@@ -39,7 +39,7 @@ const client = new ApolloClient();
 
 그래프 캐싱은 쉬운 일이 아니지만 2 년 동안 그래프를 해결하는 데 집중했습니다. 동일한 데이터로 이어지는 여러 경로를 가질 수 있으므로 정규화는 여러 구성 요소에서 데이터의 일관성을 유지하는 데 필수적입니다. 실용적인 예를 살펴 보겠습니다.
 
-```text
+```javascript
 const GET_ALL_DOGS = gql`
   query {
     dogs {
@@ -64,7 +64,7 @@ const UPDATE_DISPLAY_IMAGE = gql`
 
 dog에 대한 쿼리는 다음과 같습니다.
 
-```text
+```graphql
 const GET_DOG = gql`
   query {
     dog(id: "abc") {
@@ -78,7 +78,7 @@ const GET_DOG = gql`
 
 다음은 캐시 재 지정입니다. `apollo-boost` 클라이언트의 `cacheRedirects` 속성에 맵을 지정하여 쉽게 설정할 수 있습니다. 캐시 리디렉션은 쿼리가 캐시에서 데이터를 조회하는 데 사용할 수있는 키를 반환합니다.
 
-```text
+```javascript
 import ApolloClient from 'apollo-boost';
 
 const client = new ApolloClient({
@@ -96,7 +96,7 @@ const client = new ApolloClient({
 
 Apollo Client로 모든 데이터를 관리하면 GraphQL을 모든 데이터에 대한 통합 인터페이스로 활용할 수 있습니다. 이를 통해 GraphiQL을 통해 Apollo DevTools에서 로컬 및 원격 스키마를 모두 검사 할 수 있습니다.
 
-```text
+```javascript
 const GET_DOG = gql`
   query GetDogByBreed($breed: String!) {
     dog(breed: $breed) {

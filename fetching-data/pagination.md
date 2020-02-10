@@ -16,7 +16,7 @@ Apollo에서 페이지 매김을 수행하는 가장 쉬운 방법은 fetchMore�
 
 번호가 매겨진 페이지라고도하는 오프셋 기반 페이지 매김은 일반적으로 백엔드에서 가장 구현하기 때문에 많은 웹 사이트에서 볼 수있는 매우 일반적인 패턴입니다. 예를 들어 SQL에서는 OFFSET 및 LIMIT를 사용하여 번호가 매겨진 페이지를 쉽게 생성 할 수 있습니다.
 
-```text
+```javascript
 const FEED_QUERY = gql`
   query Feed($type: FeedType!, $offset: Int, $limit: Int) {
     currentUser {
@@ -77,7 +77,7 @@ fetchMore가 호출 된 후 UI 구성 요소가 업데이트 된로드 소품을
 
 아래 예에서는 fetchMore 쿼리를 사용하여 새 주석을 지속적으로로드합니다.이 주석은 목록 앞에 추가됩니다. fetchMore 쿼리에 사용되는 커서는 초기 서버 응답에서 제공되며 더 많은 데이터가 페치 될 때마다 업데이트됩니다.
 
-```text
+```javascript
 const MORE_COMMENTS_QUERY = gql`
   query MoreComments($cursor: String) {
     moreComments(cursor: $cursor) {
@@ -137,7 +137,7 @@ Relay는 반환 된 커서 연결에 startInfo 및 endCursor 속성으로 각각
 
 다음 예제는 한 번에 10 개의 항목 요청을 지정하며 결과는 제공된 커서 다음에 시작되어야합니다. 커서 릴레이에 대해 널이 전달되면이를 무시하고 데이터 세트의 시작부터 시작하여 초기 및 후속 요청 모두에 동일한 조회를 사용할 수있는 결과를 제공합니다`.`
 
-```text
+```javascript
 
 
     }
@@ -184,7 +184,7 @@ function CommentsWithData() {
 
 페이지 매김 쿼리를 사용하는 경우 쿼리에 전달 된 매개 변수가 기본 저장소 키를 결정하는 데 사용되지만 일반적으로 쿼리를 실행하는 코드 조각 외부에 알려지지 않으므로 누적 쿼리의 결과를 매장에서 찾기가 어려울 수 있습니다. 대상 업데이트에 안정적인 저장소 키가 없기 때문에 이는 필수 저장소 업데이트에 문제가됩니다. 페이지 매김 된 쿼리에 안정적인 저장소 키를 사용하도록 Apollo Client에 지시하려면 선택적 @connection 지시문을 사용하여 쿼리 일부에 대한 저장소 키를 지정할 수 있습니다. 예를 들어 피드 쿼리에 안정적인 저장소 키를 원한다면 @connection 지시문을 사용하도록 쿼리를 조정할 수 있습니다.
 
-```text
+```javascript
 const FEED_QUERY = gql`
   query Feed($type: FeedType!, $offset: Int, $limit: Int) {
     currentUser {

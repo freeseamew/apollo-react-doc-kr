@@ -23,7 +23,7 @@ readQuery 메소드를 사용하면 캐시에서 직접 GraphQL 쿼리를 실행
 
 다음과 같이 readQuery에 GraphQL 쿼리 문자열을 전달하십시오.
 
-```text
+```javascript
 const { todo } = client.readQuery({
   query: gql`
     query ReadTodo {
@@ -39,7 +39,7 @@ const { todo } = client.readQuery({
 
 다음과 같이 GraphQL 변수를 readQuery에 제공 할 수 있습니다.
 
-```text
+```javascript
 const { todo } = client.readQuery({
   query: gql`
     query ReadTodo($id: Int!) {
@@ -64,7 +64,7 @@ readFragment 메소드를 사용하면 조회 결과의 일부로 저장된 정�
 
 예를 들면 다음과 같습니다.
 
-```text
+```javascript
 const todo = client.readFragment({
   id: ..., // `id` is any id that could be returned by `dataIdFromObject`.
   fragment: gql`
@@ -81,7 +81,7 @@ const todo = client.readFragment({
 
 예를 들어 다음과 같이 ApolloClient를 초기화한다고 가정 해 보겠습니다.
 
-```text
+```javascript
 const client = new ApolloClient({
   ...,
   cache: new InMemoryCache({
@@ -93,7 +93,7 @@ const client = new ApolloClient({
 
 이전에 실행 된 쿼리가 ID가 5 인 Todo 오브젝트를 캐시 한 경우 다음 readFragment 호출을 사용하여 캐시에서 해당 오브젝트를 읽을 수 있습니다.
 
-```text
+```javascript
 const todo = client.readFragment({
   id: '5',
   fragment: gql`
@@ -118,7 +118,7 @@ writeQuery 및 writeFragment를 사용하여 캐시 된 데이터를 변경하�
 
 예를 들어, 다음 writeFragment 호출은 ID가 5 인 Todo 오브젝트에 대해 완료된 플래그를 로컬로 업데이트합니다.
 
-```text
+```javascript
 client.writeFragment({
   id: '5',
   fragment: gql`
@@ -136,7 +136,7 @@ Apollo Client 캐시의 모든 가입자는이 변경 사항을보고 응용 프
 
 또 다른 예로, readQuery와 writeQuery를 결합하여 캐시 된 작업 목록에 새 작업 항목을 추가 할 수 있습니다.
 
-```text
+```javascript
 const query = gql`
   query MyTodoAppQuery {
     todos {
@@ -180,7 +180,7 @@ client.writeQuery({
 
 refetchQueries는 캐시를 업데이트하는 가장 간단한 방법입니다. refetchQueries를 사용하면 변이의 영향을 받았을 수있는 저장소 부분을 다시 가져 오기 위해 변이가 완료된 후 실행할 하나 이상의 쿼리를 지정할 수 있습니다.
 
-```text
+```javascript
 mutate({
   //... insert comment mutation
   refetchQueries: [{
@@ -208,7 +208,7 @@ mutate({
 
 refetchQueries를 사용하는 가장 일반적인 방법은 다른 구성 요소에 대해 정의 된 쿼리를 가져와 해당 구성 요소가 업데이트되도록하는 것입니다.
 
-```text
+```javascript
 import RepoCommentsQuery from '../queries/RepoCommentsQuery';
 
 mutate({
@@ -222,7 +222,7 @@ mutate({
 
 업데이트를 사용하면 캐시를 완전히 제어 할 수 있으므로 원하는 방식으로 돌연변이에 대응하여 데이터 모델을 변경할 수 있습니다. 쿼리 후에 캐시를 업데이트하는 것이 좋습니다. 여기에 자세히 설명되어 있습니다.
 
-```text
+```javascript
 import CommentAppQuery from '../queries/CommentAppQuery';
 
 const SUBMIT_COMMENT_MUTATION = gql`
@@ -272,7 +272,7 @@ In our GitHunt example, we have a paginated feed that displays a list of GitHub 
 
 Let's see how to do that with the `fetchMore` method on a query:
 
-```text
+```javascript
 const FEED_QUERY = gql`
   query Feed($type: FeedType!, $offset: Int, $limit: Int) {
     currentUser {
@@ -335,7 +335,7 @@ fetchMore는 종종 페이지 매김에 사용되지만 적용 가능한 다른 
 
 @connection 지시문을 사용하려면 사용자 지정 저장소 키를 원하는 쿼리 세그먼트에 지시문을 추가하고 키 매개 변수를 제공하여 저장소 키를 지정하십시오. 키 매개 변수 외에도 선택적 필터 매개 변수를 포함 할 수 있습니다.이 매개 변수는 생성 된 사용자 정의 저장소 키에 포함 할 쿼리 인수 이름 배열을 사용합니다.
 
-```text
+```javascript
 const query = gql`
   query Feed($type: FeedType!, $offset: Int, $limit: Int) {
     feed(type: $type, offset: $offset, limit: $limit) @connection(key: "feed", filter: ["type"]) {
@@ -349,7 +349,7 @@ const query = gql`
 
 이제 안정적인 상점 키가 있으므로 writeQuery를 사용하여 상점 업데이트를 쉽게 수행 할 수 있습니다.이 경우 피드를 지 웁니다.
 
-```text
+```javascript
 client.writeQuery({
   query: gql`
     query Feed($type: FeedType!) {
@@ -373,7 +373,7 @@ client.writeQuery({
 
 경우에 따라 쿼리는 클라이언트 저장소에 이미 존재하는 데이터를 다른 키로 요청합니다. 가장 일반적인 예는 UI에 동일한 데이터를 사용하는 목록보기 및 세부 사항보기가있는 경우입니다. 목록보기는 다음 쿼리를 실행할 수 있습니다.
 
-```text
+```graphql
 query ListView {
   books {
     id
@@ -385,7 +385,7 @@ query ListView {
 
 특정 책을 선택하면 상세 조회에이 쿼리를 사용하여 개별 항목이 표시됩니다.
 
-```text
+```graphql
 query DetailView {
   book(id: $id) {
     id
@@ -399,7 +399,7 @@ query DetailView {
 
 데이터는 이미 클라이언트 캐시에있을 가능성이 높지만 다른 쿼리로 요청되었으므로 Apollo Client는이를 알지 못합니다. Apollo 클라이언트에게 데이터를 찾을 위치를 알려주기 위해 다음과 같이 사용자 정의 리졸버를 정의 할 수 있습니다.
 
-```text
+```javascript
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
 const cache = new InMemoryCache({
@@ -418,7 +418,7 @@ Apollo Client는 사용자 정의 리졸버가 반환 한 ID를 사용하여 캐
 
 **typename 속성에 무엇을 넣어야하는지 파악하려면 GraphiQL에서 쿼리 중 하나를 실행하고** typename 필드를 가져옵니다.
 
-```text
+```graphql
 query ListView {
   books {
     __typename
@@ -438,7 +438,7 @@ query DetailView {
 
 ID 목록을 반환 할 수도 있습니다.
 
-```text
+```javascript
 cacheRedirects: {
   Query: {
     books: (_, args, { getCacheKey }) =>
@@ -452,7 +452,7 @@ cacheRedirects: {
 
 때때로 사용자가 로그 아웃 할 때와 같이 상점을 완전히 재설정하려고 할 수 있습니다. 이를 위해 client.resetStore를 사용하여 Apollo 캐시를 지우십시오. client.resetStore도 활성 쿼리를 다시 가져 오기 때문에 비동기식입니다.
 
-```text
+```javascript
 export default withApollo(graphql(PROFILE_QUERY, {
   props: ({ data: { loading, currentUser }, ownProps: { client }}) => ({
     loading,
@@ -466,7 +466,7 @@ export default withApollo(graphql(PROFILE_QUERY, {
 
 이 예에서는 client.onResetStore를 사용하여 기본값을 apollo-link-state의 캐시에 씁니다. 로컬 상태 관리를 위해 아폴로 링크 상태를 사용하고 응용 프로그램의 어느 곳에서나 client.resetStore를 호출하는 경우에 필요합니다.
 
-```text
+```javascript
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { withClientState } from 'apollo-link-state';
@@ -488,7 +488,7 @@ React 컴포넌트에서 client.onResetStore를 호출 할 수도 있습니다. 
 
 resetStore에서 콜백을 구독 취소하려면 구독 취소 기능에 client.onResetStore의 리턴 값을 사용하십시오.
 
-```text
+```javascript
 import { withApollo } from "react-apollo";
 
 export class Foo extends Component {
@@ -516,7 +516,7 @@ export default withApollo(Foo);
 
 먼저 서버에서 InMemoryCache를 초기화하고 ApolloClient 인스턴스를 만들어야합니다. 서버의 초기 직렬화 된 HTML 페이로드에는 캐시에서 데이터를 추출하는 스크립트 태그가 포함되어야합니다. 스크립트 삽입 공격을 방지하려면 .replace \(\)가 필요합니다.
 
-```text
+```javascript
 `<script>
   window.__APOLLO_STATE__=${JSON.stringify(cache.extract()).replace(/</g, '\\u003c')}
 </script>`
@@ -538,7 +538,7 @@ AsyncStorage 또는 localStorage와 같은 스토리지 공급자로부터 Apoll
 
 > 참고 : persistCache 메소드는 비동기이며 Promise를 리턴합니다.
 
-```text
+```javascript
 import { AsyncStorage } from 'react-native';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { persistCache } from 'apollo-cache-persist';

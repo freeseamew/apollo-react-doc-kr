@@ -12,7 +12,7 @@ Apollo Client 3.0부터 InMemoryCache 클래스는 @ apollo / client 패키지�
 
 다음과 같이 InMemoryCache 객체를 만들어 ApolloClient 생성자에 제공하십시오.
 
-```text
+```javascript
 import { InMemoryCache, HttpLink, ApolloClient } from '@apollo/client';
 
 const client = new ApolloClient({
@@ -72,7 +72,7 @@ Apollo Client 3 이상에서 InMemoryCache는 식별자 생성에 실패하거�
 
 다음과 같이 관련 TypePolicy 객체에 keyFields 필드를 포함하십시오.
 
-```text
+```javascript
 const cache = new InMemoryCache({
   typePolicies: {
     Product: {
@@ -109,7 +109,7 @@ Book:{"title":"Fahrenheit 451","author":{"name":"Ray Bradbury"}}
 
 이러한 keyFields 문자열은 항상 스키마에 정의 된 실제 필드 이름을 참조하므로 ID 계산은 필드 별명에 민감하지 않습니다. 이 필드는 keyField를 구현하기 위해 함수를 사용하려는 경우 중요합니다.
 
-```text
+```javascript
 const cache = new InMemoryCache({
   typePolicies: {
     Person: {

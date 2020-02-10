@@ -23,7 +23,7 @@ useMutation React 후크는 Apollo 애플리케이션에서 돌연변이를 실�
 
 예를 봅시다. 먼저, ADD\_TODO라는 GraphQL 변이를 생성하는데, 이것은 할 일 목록에 항목을 추가하는 것을 나타냅니다. gq 함수에서 GraphQL 문자열을 랩핑하여 쿼리 문서로 구문 분석해야합니다.
 
-```text
+```javascript
 //index.js
 
 import gql from 'graphql-tag';
@@ -41,7 +41,7 @@ const ADD_TODO = gql`
 
 다음으로 할일 목록의 제출 양식을 나타내는 AddTodo라는 컴포넌트를 작성합니다. 그 안에 ADD\_TODO 변이를 useMutation 후크로 전달합니다.
 
-```text
+```javascript
 //index.js
 
 function AddTodo() {
@@ -91,7 +91,7 @@ mutate 함수 외에도 useMutation 후크는 돌연변이 실행의 현재 상�
 
 할 일 목록에서 기존 항목의 값을 수정할 수있는 예를 살펴 보겠습니다.
 
-```text
+```javascript
 const UPDATE_TODO = gql`
   mutation UpdateTodo($id: String!, $type: String!) {
     updateTodo(id: $id, type: $type) {
@@ -145,7 +145,7 @@ function Todos() {
 
 다음 샘플은 useMutation 호출에서 업데이트 기능 정의를 보여줍니다.
 
-```text
+```javascript
 const GET_TODOS = gql`
   query GetTodos {
     todos
@@ -206,7 +206,7 @@ useMutation 후크는 돌연변이의 로딩 및 오류 상태를 추적하기�
 
 기존의 단일 엔티티 업데이트에서 Todos 컴포넌트를 다시 방문하십시오.
 
-```text
+```javascript
 function Todos() {
   const { loading: queryLoading, error: queryError, data } = useQuery(
     GET_TODOS,

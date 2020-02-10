@@ -30,7 +30,7 @@ npm install apollo-boost @apollo/react-hooks graphql
 
 index.js 파일에서 apollo-boost에서 ApolloClient를 가져 와서 GraphQL 서버의 엔드 포인트를 클라이언트 구성 객체의 uri 속성에 추가합니다.
 
-```text
+```javascript
 import ApolloClient from 'apollo-boost';
 
 const client = new ApolloClient({
@@ -40,7 +40,7 @@ const client = new ApolloClient({
 
 이제 클라이언트가 데이터 페치를 시작할 준비가되었습니다. Apollo Client를 React에 연결하기 전에 먼저 일반 JavaScript로 쿼리를 보내 봅시다. 동일한 index.js 파일에서 client.query \(\)를 호출하십시오. 쿼리 문자열을 쿼리 문서로 구문 분석하기 위해 gql 함수를 먼저 가져와야합니다.
 
-```text
+```javascript
 import { gql } from "apollo-boost";
 // or you can use `import gql from 'graphql-tag';` instead
 
@@ -67,7 +67,7 @@ client
 
  index.js에서의 우리가 ApolloProvider와 응용 프로그램 반응 포장 할 수 있습니다. 우리는 당신이 액세스 GraphQL 데이터에 필요한 모든 장소 위에 앱에 ApolloProvider의 어딘가에 높은 퍼팅하는 것이 좋습니다. 당신이 라우터 반응 사용하는 경우 예를 들어, 루트 경로 구성 요소의 외부 수 있습니다.
 
-```text
+```javascript
 import React from 'react';
 import { render } from 'react-dom';
 
@@ -92,7 +92,7 @@ ApolloProvider가 연결되면 useQuery hook로 데이터 요청을 시작할 �
 
 useQuery 후크가 작동하는지 확인하기 위해 index.js에 ExchangeRates 구성 요소를 만들어 봅니다.
 
-```text
+```javascript
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';

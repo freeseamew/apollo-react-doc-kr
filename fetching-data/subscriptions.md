@@ -2,7 +2,7 @@
 description: GraphQL 구독으로 실시간 데이터를 얻는 방법 알아보기
 ---
 
-# Subscriptions
+# Subscriptions \(3.0\)
 
 GraphQL 사양은 쿼리를 사용하여 데이터를 가져오고 변이를 사용하여 데이터를 수정하는 것 외에도 subscription\(구독\)이라는 세 번째 작업 유형을 지원합니다.
 
@@ -14,7 +14,7 @@ GraphQL 구독은 서버에서 클라이언트로 실시간 메시지를 수신�
 
 GraphQL 구독은 쿼리 및 변이와 같이 스키마에서 정의해야합니다.
 
-```text
+```graphql
 type Subscription {
   commentAdded(repoFullName: String!): Comment
 }
@@ -22,7 +22,7 @@ type Subscription {
 
 클라이언트에서 구독 쿼리는 다른 종류의 작업과 같습니다.
 
-```text
+```graphql
 subscription onCommentAdded($repoFullName: String!){
   commentAdded(repoFullName: $repoFullName){
     id
@@ -70,7 +70,7 @@ npm install --save apollo-link-ws subscriptions-transport-ws
 
 그런 다음 GraphQL 구독 전송 링크를 초기화하십시오.
 
-```text
+```javascript
 import { WebSocketLink } from 'apollo-link-ws';
 
 const wsLink = new WebSocketLink({
@@ -81,7 +81,7 @@ const wsLink = new WebSocketLink({
 });
 ```
 
-```text
+```javascript
 import { split, HttpLink, getMainDefinition } from '@apollo/client';
 import { WebSocketLink } from 'apollo-link-ws';
 
@@ -120,7 +120,7 @@ const link = split(
 
 라이브 데이터를 UI로 가져 오는 가장 쉬운 방법은 Apollo Client의 useSubscription Hook를 사용하는 것입니다. 이를 통해 컴포넌트의 렌더링 기능 내에서 직접 서비스의 데이터 스트림을 렌더링 할 수 있습니다! 주목할 점은 구독은 리스너 일 뿐이며 처음 연결할 때 데이터를 요청하지 않고 새 데이터를 얻기 위해 연결 만 엽니 다. 라이브 데이터를 UI에 바인딩하는 것은 다음과 같이 쉽습니다.
 
-```text
+```javascript
 const COMMENTS_SUBSCRIPTION = gql`
   subscription onCommentAdded($repoFullName: String!) {
     commentAdded(repoFullName: $repoFullName) {
@@ -181,7 +181,7 @@ subscribeToMore는 Apollo Client의 React 통합을 사용하여 모든 쿼리 �
 
 다음은 일반적인 쿼리입니다.
 
-```text
+```javascript
 const COMMENT_QUERY = gql`
   query Comment($repoName: String!) {
     entry(repoFullName: $repoName) {
@@ -208,7 +208,7 @@ subscribeToMore를 사용하여 구독 할 updateToNewComments라는 함수를 �
 
 updateQuery 콜백은 초기 쿼리 데이터와 동일한 모양의 객체를 반환해야합니다. 그렇지 않으면 새 데이터가 병합되지 않습니다. 여기에 새로운 의견이 항목의 의견 목록에 표시됩니다.
 
-```text
+```javascript
 const COMMENT_QUERY = gql`
   query Comment($repoName: String!) {
     entry(repoFullName: $repoName) {
@@ -261,7 +261,7 @@ function CommentsPageWithData({ params }) {
 
 subscription 변수로 subscribeToNewComments 함수를 호출하여 실제 구독을 시작하십시오.
 
-```text
+```javascript
 export class CommentsPage extends Component {
   componentDidMount() {
     this.props.subscribeToNewComments();
@@ -273,7 +273,7 @@ export class CommentsPage extends Component {
 
 많은 경우 가입 결과를 수신하기 전에 클라이언트를 인증해야합니다. 이를 위해 SubscriptionClient 생성자는 connectionParams 필드를 허용합니다.이 필드는 구독을 설정하기 전에 서버가 연결을 확인하는 데 사용할 수있는 사용자 정의 개체를 전달합니다.
 
-```text
+```javascript
 import { WebSocketLink } from 'apollo-link-ws';
 
 const wsLink = new WebSocketLink({
