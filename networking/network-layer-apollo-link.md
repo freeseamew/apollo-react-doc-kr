@@ -16,7 +16,7 @@ Apollo Client와 함께 사용할 링크를 만들려면 npm에서 하나를 설
 
 HttpLink를 사용하여 사용자 정의 엔드 포인트 URL로 새 클라이언트를 인스턴스화하는 방법은 다음과 같습니다.
 
-```text
+```javascript
 import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
 
@@ -30,7 +30,7 @@ const client = new ApolloClient({
 
 가져올 추가 옵션을 전달해야하는 경우 :
 
-```text
+```javascript
 import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
 
@@ -52,7 +52,7 @@ Apollo Link는 귀하의 요청에 따라 미들웨어를 쉽게 사용할 수 �
 
 다음 예제는 미들웨어 작성 방법을 보여줍니다. 두 예제 모두 클라이언트가 전송 한 요청의 HTTP 헤더에 인증 토큰을 추가하는 방법을 보여줍니다.
 
-```text
+```javascript
 import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
 import { ApolloLink, concat } from 'apollo-link';
@@ -79,7 +79,7 @@ const client = new ApolloClient({
 
 다음 예는 배열로 전달 된 여러 미들웨어 사용을 보여줍니다.
 
-```text
+```javascript
 import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
 import { ApolloLink, from } from 'apollo-link';
@@ -129,7 +129,7 @@ const client = new ApolloClient({
 
 다음 예제는 afterware 기능을 구현하는 방법을 보여줍니다.
 
-```text
+```javascript
 import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
 import { onError } from 'apollo-link-error';

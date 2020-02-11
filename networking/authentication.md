@@ -8,7 +8,7 @@ Apollo Client는 인증을위한 여러 옵션이 포함 된 매우 유연한 Ap
 
 앱이 브라우저 기반이고 백엔드로 로그인 및 세션 관리를 위해 쿠키를 사용하는 경우 모든 요청과 함께 쿠키를 보내도록 네트워크 인터페이스에 지시하는 것이 매우 쉽습니다. 자격 증명 옵션 만 전달하면됩니다. 예 : 자격 증명 : 백엔드 서버가 동일한 도메인 인 경우 아래와 같이 '동일 출처'또는 자격 증명 : 백엔드가 다른 도메인 인 경우 '포함'.
 
-```text
+```javascript
 // enable cors
 var corsOptions = {
   origin: '<insert uri of front-end domain>',
@@ -21,7 +21,7 @@ app.use(cors(corsOptions));
 
 HTTP를 사용할 때 자신을 식별하는 또 다른 일반적인 방법은 권한 부여 헤더를 따라 보내는 것입니다. Apollo Links를 함께 연결하여 모든 HTTP 요청에 인증 헤더를 쉽게 추가 할 수 있습니다. 이 예제에서는 요청이 전송 될 때마다 localStorage에서 로그인 토큰을 가져옵니다.
 
-```text
+```javascript
 import { ApolloClient } from 'apollo-client';
 import { createHttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
@@ -51,7 +51,7 @@ const client = new ApolloClient({
 
 위의 예는 apollo-client 패키지에서 ApolloClient를 사용하고 있습니다. 헤더는 여전히 apollo-boost 패키지에서 ApolloClient를 사용하여 수정할 수 있지만, apollo-boost는 사용하는 HttpLink 인스턴스를 수정할 수 없으므로 헤더를 구성 매개 변수로 전달해야합니다.
 
-```text
+```javascript
 import ApolloClient from 'apollo-boost'
 
 const client = new ApolloClient({
@@ -76,7 +76,7 @@ Apollo는 모든 쿼리 결과를 캐시하므로 로그인 상태가 변경되�
 
 UI 및 저장소 상태가 현재 사용자의 권한을 반영하도록하는 가장 쉬운 방법은 로그인 또는 로그 아웃 프로세스가 완료된 후 client.resetStore \(\)를 호출하는 것입니다. 그러면 상점이 지워지고 모든 활성 조회가 다시 페치됩니다. 저장소를 지우고 활성 쿼리를 다시 가져 오지 않으려면 client.clearStore \(\)를 대신 사용하십시오. 다른 옵션은 페이지를 새로 고침하는 것인데, 비슷한 효과가 있습니다.
 
-```text
+```javascript
 const PROFILE_QUERY = gql`
   query CurrentUserForLayout {
     currentUser {

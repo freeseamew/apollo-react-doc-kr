@@ -10,7 +10,7 @@ npm install @apollo/react-hooks
 
 #### Example <a id="example"></a>
 
-```text
+```javascript
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
@@ -35,7 +35,7 @@ function Hello() {
 
 #### Function Signature`(서명)` <a id="function-signature"></a>
 
-```text
+```javascript
 function useQuery<TData = any, TVariables = OperationVariables>(
   query: DocumentNode,
   options?: QueryHookOptions<TData, TVariables>,
@@ -92,7 +92,7 @@ function useQuery<TData = any, TVariables = OperationVariables>(
 
 #### Example <a id="example-1"></a>
 
-```text
+```javascript
 import { useLazyQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 
@@ -121,7 +121,7 @@ function Hello() {
 
 #### Function Signature`(서명)` <a id="function-signature-1"></a>
 
-```text
+```javascript
 function useLazyQuery<TData = any, TVariables = OperationVariables>(
   query: DocumentNode,
   options?: LazyQueryHookOptions<TData, TVariables>,
@@ -189,7 +189,7 @@ function useLazyQuery<TData = any, TVariables = OperationVariables>(
 
 #### Example <a id="example-2"></a>
 
-```text
+```javascript
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
@@ -231,7 +231,7 @@ function AddTodo() {
 
 #### Function Signature**\(서명\)** <a id="function-signature-2"></a>
 
-```text
+```javascript
 function useMutation<TData = any, TVariables = OperationVariables>(
   mutation: DocumentNode,
   options?: MutationHookOptions<TData, TVariables>,
@@ -284,7 +284,7 @@ function useMutation<TData = any, TVariables = OperationVariables>(
 
 #### Example <a id="example-3"></a>
 
-```text
+```javascript
 const COMMENTS_SUBSCRIPTION = gql`
   subscription onCommentAdded($repoFullName: String!) {
     commentAdded(repoFullName: $repoFullName) {
@@ -307,7 +307,7 @@ function DontReadTheComments({ repoFullName }) {
 
 #### Function Signature <a id="function-signature-3"></a>
 
-```text
+```javascript
 function useSubscription<TData = any, TVariables = OperationVariables>(
   subscription: DocumentNode,
   options?: SubscriptionHookOptions<TData, TVariables>,
@@ -350,7 +350,7 @@ function useSubscription<TData = any, TVariables = OperationVariables>(
 
 #### Example <a id="example-4"></a>
 
-```text
+```javascript
 function SomeComponent() {
   const client = useApolloClient();
   // `client` is now set to the `ApolloClient` instance being used by the
@@ -386,7 +386,7 @@ import { ApolloProvider } from '@apollo/react-hooks';
 
 #### Example <a id="example"></a>
 
-```text
+```javascript
 ReactDOM.render(
   <ApolloProvider client={client}>
     <MyRootComponent />
