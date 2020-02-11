@@ -142,7 +142,7 @@ const cache = new InMemoryCache({
 
 전 세계적으로 식별자 생성 사용자 정의 특정 \_\_typename과 관련이없는 단일 폴백 키 필드 함수를 정의해야하는 경우 Apollo Client 2.x의 이전 dataIdFromObject 함수가 계속 지원됩니다.
 
-```text
+```javascript
 import { defaultDataIdFromObject } from '@apollo/client';
 
 const cache = new InMemoryCache({
@@ -174,7 +174,7 @@ InMemoryCache가 특정 유형의 객체를 정규화하지 않도록 지시 할
 
 TypePolicy 개체는 다음 필드를 포함 할 수 있습니다.
 
-```text
+```javascript
 type TypePolicy = {
   // Allows defining the primary key fields for this type, either using an
   // array of field names or a function that returns an arbitrary string.
@@ -212,7 +212,7 @@ type KeyFieldsFunction = (
 
 keyField 외에도 TypePolicy는 queryType, mutationType 또는 subscriptionType을 true로 설정하여 루트 쿼리, 돌연변이 또는 가입 유형을 나타내는 것을 나타낼 수 있습니다.
 
-```text
+```javascript
 const cache = new InMemoryCache({
   typePolicies: {
     UnconventionalRootQuery: {
@@ -263,7 +263,7 @@ Typetype-having 엔티티 객체의 식별 및 정규화를 구성하는 것 외
 
 FieldPolicy 유형 및 관련 유형은 다음과 같습니다.
 
-```text
+```javascript
 export type FieldPolicy<TValue> = {
   keyArgs?: KeySpecifier | KeyArgsFunction;
   read?: FieldReadFunction<TValue>;
@@ -307,7 +307,7 @@ TypePolicy 객체의 keyFields 속성과 유사하게 FieldPolicy 객체의 keyA
 
 예를 들어, 주어진 키에 따라 비밀 값을 반환하지만 요청을 인증하기 위해 액세스 토큰이 필요한 필드가 있다고 가정합니다.
 
-```text
+```javascript
 query GetSecret {
   secret(key: $secretKey, token: $secretAccessToken) {
     message
@@ -319,7 +319,7 @@ query GetSecret {
 
 이와 같은 경우 액세스 토큰 팩터를 필드 값의 스토리지에 저장하는 것은 낭비적이고 일관성이 없으므로, 필드 정책의 keyArgs 옵션을 사용하여 키만 "중요"하다는 것을 캐시에 알려야합니다. 비밀 필드 :
 
-```text
+```javascript
 const cache = new InMemoryCache({
   typePolicies: {
     Query: {
