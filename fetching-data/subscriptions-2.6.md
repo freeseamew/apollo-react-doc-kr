@@ -117,7 +117,7 @@ const link = split(
 
 ### useSubscription Hook <a id="usesubscription-hook"></a>
 
-라이브 데이터를 UI로 가져 오는 가장 쉬운 방법은 Apollo Client의 useSubscription Hook를 사용하는 것입니다. 이를 통해 컴포넌트의 렌더링 기능 내에서 직접 서비스의 데이터 스트림을 렌더링 할 수 있습니다! 주목할 점은 구독은 리스너 일 뿐이며 처음 연결할 때 데이터를 요청하지 않고 새 데이터를 얻기 위해 연결 만 엽니 다. 라이브 데이터를 UI에 바인딩하는 것은 다음과 같이 쉽습니다.
+라이브 데이터를 UI로 가져 오는 가장 쉬운 방법은 Apollo Client의 useSubscription Hook를 사용하는 것입니다. 이를 통해 컴포넌트의 렌더링 기능 내에서 직접 서비스의 데이터 스트림을 렌더링 할 수 있습니다! 주목할 점은 구독은 리스너 일 뿐이며 처음 연결할 때 데이터를 요청하지 않고 새 데이터를 얻기 위해 연결 만 엽니다. 라이브 데이터를 UI에 바인딩하는 것은 다음과 같이 쉽습니다.
 
 ```javascript
 const COMMENTS_SUBSCRIPTION = gql`
@@ -169,7 +169,7 @@ useSubscription Hook가 호출 된 후 다음 속성을 가진 결과 객체를 
 
 ### subscribeToMore <a id="subscribetomore"></a>
 
-GraphQL 서브 스크립 션을 사용하면 서버에서 푸시 할 때 클라이언트에게 경고가 표시되므로 응용 프로그램에 가장 적합한 패턴을 선택해야합니다.
+GraphQL subscripthon 을 사용하면 서버에서 푸시 할 때 클라이언트에게 경고가 표시되므로 응용 프로그램에 가장 적합한 패턴을 선택해야합니다.
 
 * 알림으로 사용하고 사용자에게 알리거나 데이터를 다시 가져 오는 등 원하는 로직을 실행할 수 있습니다.
 * 알림과 함께 전송 된 데이터를 사용하여 상점에 직접 병합하십시오 \(기존 쿼리에 자동으로 통지 됨\)

@@ -74,7 +74,7 @@ import { render } from 'react-dom';
 import { ApolloProvider } from '@apollo/react-hooks';
 
 const App = () => (
-  <ApolloProvider client={client}>
+  <Apoll client={client}>
     <div>
       <h2>My first Apollo app 🚀</h2>
     </div>
