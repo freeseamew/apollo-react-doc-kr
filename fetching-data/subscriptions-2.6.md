@@ -97,8 +97,8 @@ const wsLink = new WebSocketLink({
   }
 });
 
-// using the ability to split links, you can send data to each link
-// depending on what kind of operation is being sent
+// 링크 분할 기능을 사용하여 각 링크에 데이터를 보낼 수 있습니다
+// 어떤 종류의 작업이 전송되는지에 따라
 const link = split(
   // split based on operation type
   ({ query }) => {
@@ -113,7 +113,7 @@ const link = split(
 );
 ```
 
-이제 쿼리와 돌연변이가 정상적으로 HTTP를 통과하지만 구독은 웹 소켓 전송을 통해 수행됩니다.
+이제 쿼리와 변이가 정상적으로 HTTP를 통과하지만 구독은 웹 소켓 전송을 통해 수행됩니다.
 
 ### useSubscription Hook <a id="usesubscription-hook"></a>
 
